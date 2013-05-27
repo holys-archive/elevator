@@ -4,7 +4,7 @@ include/
 share/
 config.py
 *.py[cod]
-
+*.swp
 # C extensions
 *.so
 

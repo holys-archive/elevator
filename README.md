@@ -1,11 +1,11 @@
-Auto tweet GDUFS movie information to Sina Weibo
+Auto tweet [GDUFS movie information][1] to Sina Weibo
 
 The code is ugly. I will refactor it !
 
 Follow me in @weibo:  http://weibo.com/dpress
 
 
-# How to start?
+### How to start?
 
 Make sure you have `python2.7`, `pip`, `virtualenv` installed.
 
@@ -17,3 +17,4 @@ Make sure you have `python2.7`, `pip`, `virtualenv` installed.
 
 
 
+[1]: http://strs.gdufs.edu.cn/web/

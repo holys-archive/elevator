@@ -20,13 +20,14 @@ __version__ = '0.1.0'
 __author__ = 'holys <chendahui007@gmail.com>'
 
 
-def parse_sourcelist(url):
+def parse_sourcelist(session, url):
     """Parse sourcelist to get filedetail url"""
 
     thisid_re = re.compile(r"VodAdmin\/(.+?)\'")
     response = session.get(url)
     response.encoding = 'utf-8'
-    return  list(set(thisid_re.findall(response.text)))
+    detail_list = list(set(thisid_re.findall(response.text)))
+    return [urljoin(ROOT, item) for item in detail_list]
 
 
 def parse_detail(url):
@@ -40,9 +41,7 @@ def parse_detail(url):
    date_re = re.compile(ur"创建日期.\s(.+)?<")
 
    title = re.search(title_re, content).group(1)
-   upload_date = re.search(date_re, content)
-
-   #import pdb; pdb.set_trace()
+   upload_date = re.search(date_re, content).group(1)
    download_url = soup.find_all('a')[2].get('href').encode('utf8')
    poster_url = soup.find_all('img')[0].get('src')
    return (title, upload_date, download_url, poster_url) 
@@ -131,13 +130,10 @@ def construct_status(title, download_url, detail_url, alt):
 
 
 if __name__ == '__main__':
-    activate_this = 'bin/activate_this.py'
-    execfile(activate_this, dict(__file__=activate_this))
     session = requests.Session()
     session.get(ROOT)
     url = 'http://strs.gdufs.edu.cn/web/VOD/vod_sourcelist.asp?Groupid=1&page=1'
-    for item in parse_sourcelist(url):
-        detail_url = urljoin(ROOT, item)
+    for detail_url in parse_sourcelist(session, url):
         title = parse_detail(detail_url)[0] 
         download_url = parse_detail(detail_url)[2]
         alt = parse_douban(title)[1]

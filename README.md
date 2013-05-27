@@ -7,6 +7,7 @@ Follow me in @weibo:  http://weibo.com/dpress
 
 ### How to start?
 
+
 Make sure you have `python2.7`, `pip`, `virtualenv` installed.
 
     $ git clone https://github.com/holys/elevator.git
@@ -14,6 +15,11 @@ Make sure you have `python2.7`, `pip`, `virtualenv` installed.
     $ virtualenv venv
     $ source venv/bin/activate
     (venv) $ pip install -r requirements.txt
+
+
+- Prepare database for storing history movie information
+
+    sqlite3 /data/movie.db < schema.sql
 
 
 

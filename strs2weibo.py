@@ -14,6 +14,7 @@ import requests
 from weibo import APIClient
 from config import APP_KEY, APP_SECRET, ACCESS_TOKEN, EXPIRES_IN,\
     CALLBACK_URL, ROOT, API_KEY
+from proxy import random_headers
 
 
 __version__ = '0.1.0'
@@ -47,20 +48,20 @@ def parse_detail(url):
    return (title, upload_date, download_url, poster_url) 
 
    
-def parse_douban(title):
+def parse_douban(title, api_key=API_KEY):
     """Parse douban movie api result"""
-
-    result = requests.get('https://api.douban.com/v2/movie/search?q=%s&apikey=%s' %\
-        (title, API_KEY)).json()
-    if result.get('total') == 0:
-        return 
-    else:
-        title = result.get('subjects',{})[0].get('title')
-        alt = result.get('subjects', {})[0].get('alt')
+    headers = random_headers()
+    url = 'https://api.douban.com/v2/movie/search?q=%s&apikey=%s' % (title,\
+            api_key)
+    result = requests.get(url, headers=headers).json()
+    if not result.get('total') == 0:
+        title = result.get('subjects',{})[0].get('title', '')
+        alt = result.get('subjects', {})[0].get('alt', '')
         lpic = result.get('subjects',\
                 [''])[0].get('images').get('large').replace('\\', '')
         return (title, alt, lpic)
-
+    else:
+        print "Movie not found in douban"
 
 def count_page(url):
     """ Count how many pages of certain url"""

@@ -35,8 +35,6 @@ def create_db():
                 time.sleep(1)
             except TypeError:
                 print "%s not found in Douban" % title
-                with open('error.txt', 'a') as ff:
-                    ff.write(title.encode('utf8'))
     conn.commit()
     conn.close()
 

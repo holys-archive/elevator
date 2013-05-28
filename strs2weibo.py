@@ -56,17 +56,21 @@ def parse_douban(title, api_key=API_KEY):
     url = 'https://api.douban.com/v2/movie/search?q=%s&apikey=%s' % (title,\
             api_key)
     result = requests.get(url, headers=headers, proxies=proxies).json()
-    if result.get('msg'):
-        print result.get('msg')
-    if result.get('total') > 0:
-        douban_title = result.get('subjects')[0].get('title')
-        douban_url = result.get('subjects')[0].get('alt')
-        douban_id = result.get('subjects')[0].get('id')
-        lpic_url = result.get('subjects',\
-                )[0].get('images').get('large').replace('\\', '')
-        return (douban_title, douban_url, douban_id, lpic_url)
-    else:
-        print "%s found in douban" % title
+    try:
+        if result.get('msg'):
+            print result.get('msg')
+        if result.get('total') > 0:
+            douban_title = result.get('subjects')[0].get('title')
+            douban_url = result.get('subjects')[0].get('alt')
+            douban_id = result.get('subjects')[0].get('id')
+            lpic_url = result.get('subjects',\
+                    )[0].get('images').get('large').replace('\\', '')
+            return (douban_title, douban_url, douban_id, lpic_url)
+        else:
+            print "%s found in douban" % title
+    except IndexError:
+        print "fuck 豆瓣API, %s not found" % title 
+
 
 
 def count_page(url):

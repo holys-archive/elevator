@@ -21,7 +21,7 @@ def create_db():
         conn.text_factory = str
         cursor = conn.cursor()
         f = open(_detail)
-        for line in f.readlines():
+        for line in f.readlines()[1083:]:
             (title, download_url, movie_url) = line.split('|')
             try:
                 (douban_title, douban_url,douban_id, lpic_url) = parse_douban(title,

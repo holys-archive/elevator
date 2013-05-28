@@ -7,6 +7,6 @@ create table movie(
     douban_url text,
     douban_title text,
     lpic_url text,
-    douban_id integet,
+    douban_id integer,
     sended integer default 0
 );

@@ -907,7 +907,6 @@
 星河战队|http://202.116.194.117/G/影视频道/经典故事片/星河战队.avi|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=28035
 明亮的星cd2|http://202.116.194.117/F/欧美/剧情/明亮的星cd2.rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=34279
 明亮的星cd1|http://202.116.194.117/F/欧美/剧情/明亮的星cd1.rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=34278
-昂山素季|http://202.116.194.117/G/欧美/纪录片/昂山素季.rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=120434
 时间规划局|http://202.116.194.117/G/欧美/动作/时间规划局r5中字.rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=99329
 时间与城市|http://202.116.194.117/G/欧美/纪录片/时间与城市.rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=104171
 时空贱谍007|http://202.116.194.117/G/影视频道/经典故事片/时空贱谍007.avi|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=28034
@@ -1082,7 +1081,7 @@
 志雲飯局 – CH155 (Twins)|http://202.116.194.117/G/影视频道/港台/剧情/志雲飯局 – ch155 (twins).rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=26507
 志明与春娇(粤语版)|http://202.116.194.117/F/港台/喜剧/志明与春娇(粤语版).avi|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=126598
 忍者乱太郎|http://202.116.194.117/G/日韩/喜剧/忍者乱太郎.rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=183675
-心魔（金像獎最佳女主角）|http://202.116.194.117/F/影视频道/港台/喜剧/心魔.rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=29395
+心魔|http://202.116.194.117/F/影视频道/港台/喜剧/心魔.rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=29395
 心灵侦探八云 04|http://202.116.194.117/G/动漫/欧美/[心灵侦探.八云].[dymy][shinrei_tantei_yakumo][04][big5][848x480].rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=53579
 心灵侦探八云 03|http://202.116.194.117/G/动漫/日韩/[wolf][心靈偵探八雲_shinreitantei.yakumo][第03话][big5][rv10][848x480].rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=53578
 心灵侦探八云 02|http://202.116.194.117/G/动漫/日韩/[wolf][心靈偵探八雲_shinreitantei.yakumo][第02话][big5][rv10][848x480].rmvb|http://strs.gdufs.edu.cn/web/FileDetailedInfo.asp?thisid=53577

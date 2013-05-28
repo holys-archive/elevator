@@ -39,13 +39,6 @@ USER_AGENT_LIST = (
     'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.12) Gecko/20080219 Firefox/2.0.0.12 Navigator/9.0.0.6',
 )
 
-def read_proxy_list():
-    for line in open('list.txt'):
-        proxy_list.append(line.strip())
-
-
-def random_proxy():
-    return 'http://' + random.choice(proxy_list)
 
 
 def random_headers():

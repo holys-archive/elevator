@@ -3,6 +3,7 @@ lib/
 include/
 share/
 config.py
+data/*-journal
 *.py[cod]
 *.swp
 # C extensions

@@ -56,14 +56,18 @@ def parse_douban(title, api_key=API_KEY):
     url = 'https://api.douban.com/v2/movie/search?q=%s&apikey=%s' % (title,\
             api_key)
     result = requests.get(url, headers=headers, proxies=proxies).json()
-    if not result.get('total') == 0:
-        title = result.get('subjects')[0].get('title', '')
-        alt = result.get('subjects')[0].get('alt', '')
-        lpic = result.get('subjects',\
+    if result.get('msg'):
+        print result.get('msg')
+    if result.get('total') > 0:
+        douban_title = result.get('subjects')[0].get('title')
+        douban_url = result.get('subjects')[0].get('alt')
+        douban_id = result.get('subjects')[0].get('id')
+        lpic_url = result.get('subjects',\
                 )[0].get('images').get('large').replace('\\', '')
-        return (title, alt, lpic)
+        return (douban_title, douban_url, douban_id, lpic_url)
     else:
-        print "Movie not found in douban"
+        print "%s found in douban" % title
+
 
 def count_page(url):
     """ Count how many pages of certain url"""
@@ -119,7 +123,7 @@ def weibo_upload(status, pic):
     return client.statuses.upload.post(status=status, pic=pic)
 
 
-def construct_status(title, download_url, detail_url, alt):
+def construct_status(title, download_url, detail_url, douban_url):
     """Construct weibo message """
 
     client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET,\
@@ -128,7 +132,7 @@ def construct_status(title, download_url, detail_url, alt):
     download_url =\
         client.short_url.shorten.get(url_long=download_url).get('urls')[0].get('url_short')
     status = u"#电影传送门#《%s》 下载:%s 详情:%s 豆瓣电影:%s" %(title,\
-            download_url, detail_url, alt)
+            download_url, detail_url, douban_url)
     return status
 
 
@@ -139,9 +143,9 @@ if __name__ == '__main__':
     for detail_url in parse_sourcelist(session, url):
         title = parse_detail(detail_url)[0] 
         download_url = parse_detail(detail_url)[2]
-        alt = parse_douban(title)[1]
-        pic = retrieve_image(parse_douban(title)[2])
-        status = construct_status(title, download_url, detail_url, alt)
+        douban_url = parse_douban(title)[1]
+        pic = retrieve_image(parse_douban(title)[3])
+        status = construct_status(title, download_url, detail_url, douban_url)
         print status
 #        weibo_upload(status, pic)
 

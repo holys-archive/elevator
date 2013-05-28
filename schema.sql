@@ -1,4 +1,4 @@
-drop table if exists movie;
+--drop table if exists movie;
 create table movie(
     id integer primary key autoincrement not null,
     title text not null,
@@ -7,5 +7,6 @@ create table movie(
     douban_url text,
     douban_title text,
     lpic_url text,
+    douban_id integet,
     sended integer default 0
 );

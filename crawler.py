@@ -10,6 +10,7 @@ from config import ROOT
 from strs2weibo import parse_detail, parse_sourcelist
 
 base_url = 'http://strs.gdufs.edu.cn/web/VOD/vod_sourcelist.asp?Groupid=1&page=%d'
+#base_url = 'http://strs.gdufs.edu.cn/web/VOD/vod_sourcelist.asp?Groupid=3&&FirstTypeID=3391&page=%d'
 session = requests.Session()
 session.get(ROOT)
 with open('detail.txt', 'w') as f:

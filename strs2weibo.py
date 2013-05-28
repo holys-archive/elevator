@@ -127,7 +127,7 @@ def weibo_upload(status, pic):
     return client.statuses.upload.post(status=status, pic=pic)
 
 
-def construct_status(title, download_url, detail_url, douban_url):
+def construct_status(topic, title, download_url, detail_url, douban_url):
     """Construct weibo message """
 
     client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET,\
@@ -135,7 +135,7 @@ def construct_status(title, download_url, detail_url, douban_url):
     client.set_access_token(ACCESS_TOKEN, EXPIRES_IN)
     download_url =\
         client.short_url.shorten.get(url_long=download_url).get('urls')[0].get('url_short')
-    status = u"#电影传送门#《%s》 下载:%s 详情:%s 豆瓣电影:%s" %(title,\
+    status = u"#%s#《%s》 下载:%s 详情:%s 豆瓣电影:%s" %(topic, title,\
             download_url, detail_url, douban_url)
     return status
 

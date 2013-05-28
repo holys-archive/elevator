@@ -1,7 +1,4 @@
-bin/
-lib/
-include/
-share/
+venv/
 config.py
 data/*-journal
 *.py[cod]

@@ -1,4 +1,4 @@
-Auto tweet [GDUFS movie information][1] to Sina Weibo
+Auto tweet [GDUFS VOD][1] information to Sina Weibo
 
 The code is ugly. I will refactor it !
 

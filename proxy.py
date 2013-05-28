@@ -4,7 +4,10 @@
 
 import  random
 
-proxy_list = []
+PROXY = {
+    'ftp': 'http://192.168.235.25:7788',
+    'debian': 'http://192.168.235.36:7788'
+}
 
 HEADERS = [
     ('Accept', '*/*'),

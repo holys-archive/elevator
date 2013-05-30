@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-activate_this = 'bin/activate_this.py'
+activate_this = 'venv/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
 from datetime import datetime
@@ -67,7 +67,7 @@ def parse_douban(title, api_key=API_KEY):
                     )[0].get('images').get('large').replace('\\', '')
             return (douban_title, douban_url, douban_id, lpic_url)
         else:
-            print "%s found in douban" % title
+            print "%s not found in douban" % title
     except IndexError:
         print "fuck 豆瓣API, %s not found" % title 
 
@@ -86,8 +86,6 @@ def retrieve_image(url):
     """Retrieve an image from Internet and return image local path"""
 
     return open(list(urlretrieve(url))[0], 'rb')
-
-
 
 
 def check_update(date):
@@ -114,9 +112,9 @@ def weibo_upload(status, pic):
     """Tweet with image
     
     +-----------------------------------------------------------+
-    | +--------------+----------+-----------+--------+--------+ |
-    | | #电影传送门# | 电影名称 |下载地址URL| 详情URL| 豆瓣URL| |
-    | +--------------+----------+-----------+--------+--------+ |
+    | +--------------+----------+--------------------+--------+ |
+    | | #电影传送门# | 电影名称 |下载地址URL1, URL2  | 豆瓣URL| |
+    | +--------------+----------+--------------------+--------+ |
     |                    电影海报(图片)                         |
     +-----------------------------------------------------------+
     """
@@ -127,29 +125,18 @@ def weibo_upload(status, pic):
     return client.statuses.upload.post(status=status, pic=pic)
 
 
-def construct_status(topic, title, download_url, detail_url, douban_url):
+def construct_status(topic, douban_title, douban_url, *download_url):
     """Construct weibo message """
-
+    #import pdb; pdb.set_trace()
     client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET,\
         redirect_uri=CALLBACK_URL)
+    #import pdb; pdb.set_trace()   
     client.set_access_token(ACCESS_TOKEN, EXPIRES_IN)
     download_url =\
-        client.short_url.shorten.get(url_long=download_url).get('urls')[0].get('url_short')
-    status = u"#%s#《%s》 下载:%s 详情:%s 豆瓣电影:%s" %(topic, title,\
-            download_url, detail_url, douban_url)
+        [client.short_url.shorten.get(url_long=url).get('urls')[0].get('url_short').encode('utf8')\
+        for url in download_url]
+    download_url = ' , '.join(download_url)
+    status = u"#%s#《%s》 下载:%s 豆瓣电影:%s" %(topic, douban_title,\
+            download_url, douban_url)
     return status
-
-
-if __name__ == '__main__':
-    session = requests.Session()
-    session.get(ROOT)
-    url = 'http://strs.gdufs.edu.cn/web/VOD/vod_sourcelist.asp?Groupid=1&page=1'
-    for detail_url in parse_sourcelist(session, url):
-        title = parse_detail(detail_url)[0] 
-        download_url = parse_detail(detail_url)[2]
-        douban_url = parse_douban(title)[1]
-        pic = retrieve_image(parse_douban(title)[3])
-        status = construct_status(title, download_url, detail_url, douban_url)
-        print status
-#        weibo_upload(status, pic)
 

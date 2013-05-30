@@ -1,40 +1,30 @@
 #!usr/bin/env python
 # -*- coding: utf-8 -*-
 
-activate_this = './bin/activate_this.py'
+activate_this = 'venv/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
-import sys
-from config import APP_KEY, APP_SECRET, ACCESS_TOKEN, EXPIRES_IN,\
-CALLBACK_URL, ROOT
-from weibo import APIClient
 import requests
+from strs2weibo import parse_douban, parse_detail, parse_sourcelist,\
+    contruct_status, retrieve_image, ROOT
 
 
-
-def weibo_upload(status, pic):
-    """Tweet with image
-    
-    +-----------------------------------------------------------+
-    | +--------------+----------+-----------+--------+--------+ |
-    | | #电影传送门# | 电影名称 |下载地址URL| 详情URL| 豆瓣URL| |
-    | +--------------+----------+----------+------------------+ |
-    |                    电影海报(图片)                         |
-    +-----------------------------------------------------------+
-    """
-
-    client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET,\
-        redirect_uri=CALLBACK_URL)
-    client.set_access_token(ACCESS_TOKEN, EXPIRES_IN)
-    return client.statuses.upload.post(status=status, pic=pic)
-     
 
 if __name__ == '__main__':
-    url = 'http://strs.gdufs.edu.cn/web/VOD/vod_sourcelist.asp?Groupid=1'  
-    s = requests.Session()
-    s.get(ROOT)
-    import pdb; pdb.set_trace()
-    print sys.path
+    session = requests.Session()
+    session.get(ROOT)
+    url = 'http://strs.gdufs.edu.cn/web/VOD/vod_sourcelist.asp?Groupid=1&page=1'
+    for detail_url in parse_sourcelist(session, url):
+        
+        title = parse_detail(detail_url)[0] 
+        download_url = parse_detail(detail_url)[2]
+        (douban_title, douban_url, douban_id, lpic_url ) = parse_douban(title)
+        pic = retrieve_image(lpic_url)
+        topic = u'电影传送门'
+        status = construct_status(topic, douban_title, download_url, douban_url)
+        print status
+#        weibo_upload(status, pic)
+
     
 
 

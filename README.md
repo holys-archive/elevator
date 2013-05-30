@@ -24,3 +24,8 @@ Make sure you have `python2.7`, `pip`, `virtualenv` installed.
 
 
 [1]: http://strs.gdufs.edu.cn/web/
+
+### TODO
+
+Improve the accuracy rate of matching douban movie data with Text Similarity Algorithm
+

@@ -1,6 +1,7 @@
 venv/
 config.py
 data/*-journal
+data/production.db
 *.py[cod]
 *.swp
 # C extensions

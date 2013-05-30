@@ -15,7 +15,7 @@ from sqlite3 import dbapi2 as sqlite3
 from strs2weibo import retrieve_image, construct_status, weibo_upload
 
 
-_db = 'data/movie.db'
+_db = 'data/production.db'
 
 
 def fetch_data():

@@ -5,7 +5,7 @@ The code is ugly. I will refactor it !
 Follow me in @weibo:  http://weibo.com/dpress
 
 
-### How to start?
+### HOW TO START?
 
 
 Make sure you have `python2.7`, `pip`, `virtualenv` installed.
@@ -25,7 +25,14 @@ Make sure you have `python2.7`, `pip`, `virtualenv` installed.
 
 [1]: http://strs.gdufs.edu.cn/web/
 
+### CODING STYLE
+
+- Python PEP8 
+- SQL STATEMENT: UPPER-CASE, function lower-case
+
+
 ### TODO
 
 Improve the accuracy rate of matching douban movie data with Text Similarity Algorithm
+
 

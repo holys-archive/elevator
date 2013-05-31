@@ -5,15 +5,17 @@ activate_this = 'venv/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
 from datetime import datetime
-from hashlib import md5
 import re
+from sqlite3 import dbapi2 as sqlite3
 from urllib import urlretrieve
 from urlparse import urljoin
+
 from bs4 import BeautifulSoup
 import requests
 from weibo import APIClient
+
 from config import APP_KEY, APP_SECRET, ACCESS_TOKEN, EXPIRES_IN,\
-    CALLBACK_URL, ROOT, API_KEY
+    CALLBACK_URL, ROOT, API_KEY, DATABASE
 from proxy import random_headers, PROXY
 
 
@@ -77,7 +79,6 @@ def parse_douban(title, api_key=API_KEY):
         print "f*ck 豆瓣API, %s not found" % title 
 
 
-
 def count_page(url):
     """ Count how many pages of certain url"""
 
@@ -100,18 +101,28 @@ def check_update(date):
     return  format_date.date() == datetime.now().date()
 
 
-def check_sended(msg):
-    """Check if sended before"""
-    
-    sended = False
-    with open(datetime.now().strftime('%Y-%m-%d'), 'a+') as datefile:
-        if md5(msg).hexdigest() in datefile.read():
-            print 'Sended before'
-            sended = True
+def fetch_data(query, db=DATABASE):
+    """Fetch data from db for preparing tweeting message """
+
+    with sqlite3.connect(db) as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        if not rows:
+            print "Can't query data from db"
+            return False
+        if len(rows) > 1:
+            print '-' * 40
+            douban_title = rows[0][0]
+            douban_url = rows[0][2]
+            lpic_url = rows[0][3]
+            douban_id = rows[0][4]
+            download_url = [row[1] for row in rows]
         else:
-            datefile.write(md5(msg).hexdigest())
-    return sended
-    
+            douban_title, download_url, douban_url, lpic_url, douban_id = rows[0]
+            download_url = [download_url]
+    return douban_title, download_url, douban_url, lpic_url, douban_id
+
 
 def weibo_upload(status, pic):
     """Tweet with image
@@ -132,6 +143,7 @@ def weibo_upload(status, pic):
 
 def construct_status(topic, douban_title, douban_url, *download_url):
     """Construct weibo message """
+
     client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET,\
         redirect_uri=CALLBACK_URL)
     client.set_access_token(ACCESS_TOKEN, EXPIRES_IN)
@@ -143,3 +155,23 @@ def construct_status(topic, douban_title, douban_url, *download_url):
             download_url, douban_url)
     return status
 
+
+def send_weibo(topic, query, update):
+    """Send weibo message and update database"""
+    if not fetch_data(query):
+        return 
+    douban_title, download_url, douban_url, lpic_url, douban_id =\
+       fetch_data(query)
+    lpic = retrieve_image(lpic_url)
+    status = construct_status(topic, douban_title, douban_url, *download_url)
+    response =  weibo_upload(status=status, pic=lpic)
+    db = DATABASE
+    if response.get('created_at'):
+        with sqlite3.connect(db) as conn:
+            cursor = conn.cursor()
+            cursor.execute(update, (douban_id,))
+            print "\nWeibo sented successfully !\n","douban_id:", douban_id
+    elif response.get('error_code'):
+        print response.get('error_code'), response.get('error')
+    else:
+        print "Unknown Error!"

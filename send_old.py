@@ -18,13 +18,15 @@ from strs2weibo import retrieve_image, construct_status, weibo_upload
 _db = 'data/production.db'
 
 
-def fetch_data():
+def _fetch_data():
+    """Fetch data from db for preparing tweeting message """
+
     with sqlite3.connect(_db) as conn:
         cursor = conn.cursor()
-        cursor.execute("""
-        select douban_title, download_url, douban_url, lpic_url, douban_id from movie
-        where douban_id in (select douban_id from movie order by random() limit
-        1)""")
+        query = """SELECT douban_title, douban_url, lpic_url, douban_id FROM
+                movie WHERE douban_id in (SELECT douban_id FROM movie ORDER BY
+                random() LIMIT 1) and sended=0"""
+        cursor.execute(query)
         rows = cursor.fetchall()
         if len(rows) > 1:
             print '-' * 40
@@ -39,9 +41,9 @@ def fetch_data():
     return douban_title, download_url, douban_url, lpic_url, douban_id
 
 
-if __name__ == '__main__':
+def main():
     topic = u'电影传送门'
-    douban_title, download_url, douban_url, lpic_url, douban_id = fetch_data()
+    douban_title, download_url, douban_url, lpic_url, douban_id = _fetch_data()
     lpic = retrieve_image(lpic_url)
     status = construct_status(topic, douban_title, douban_url, *download_url)
     response =  weibo_upload(status=status, pic=lpic)
@@ -56,3 +58,6 @@ if __name__ == '__main__':
     else:
         print "Unknown Error!"
 
+
+if __name__ == '__main__':
+    main()

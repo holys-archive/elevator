@@ -4,14 +4,15 @@
 activate_this = 'venv/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
-from datetime import datetime
+#from datetime import datetime
 from hashlib import md5
 from sqlite3 import dbapi2 as sqlite3
 
 import requests
 
 from config import ROOT, DATABASE, API_KEY
-from strs2weibo import parse_detail, parse_sourcelist, parse_douban, send_weibo
+from strs2weibo import parse_detail, parse_sourcelist, parse_douban,\
+send_weibo, check_update
 
 
 def _save_data(url, session, db):
@@ -34,13 +35,12 @@ def _save_data(url, session, db):
             data = (title, download_url, movie_url, douban_url, douban_title,\
                     douban_id, lpic_url, download_url_md5, upload_date)
 
-            test = datetime.strptime('2013-05-28', '%Y-%m-%d').date() == \
-                    datetime.strptime(upload_date, '%Y-%m-%d').date()
-            #记得改回来啊
-            #if check_update(upload_date) and not cursor.execute(query,
-            #        (download_url_md5, )).fetchall():
-            if test and not cursor.execute(query, (download_url_md5,)).fetchall():
-                print "Can insert data", douban_title
+            #test = datetime.strptime('2013-05-28', '%Y-%m-%d').date() == \
+            #        datetime.strptime(upload_date, '%Y-%m-%d').date()
+            #if test and not cursor.execute(query, (download_url_md5,)).fetchall():
+            if check_update(upload_date) and not cursor.execute(query,
+                    (download_url_md5, )).fetchall():
+                print "Insert data", douban_title, "into database"
                 cursor.execute(insert, data)
                 conn.commit()
             else:

@@ -26,12 +26,13 @@ def create_db():
             try:
                 (douban_title, douban_url,douban_id, lpic_url) = parse_douban(title,
                         api_key=API_KEY)
-                print title,'<><><>', douban_title
+                print title, '<><><>', douban_title
                 data = (title, download_url, movie_url, douban_url,\
                         douban_title, douban_id, lpic_url)
-                cursor.execute("""
-                insert into movie (title, download_url, movie_url, douban_url,
-                douban_title, douban_id, lpic_url) values(?,?,?,?,?,?,?)""", data)
+                insert = """INSERT INTO movie (title, download_url, movie_url,
+                douban_url, douban_title, douban_id, lpic_url) VALUES(?,?,?,?,?,?,?)"""
+                cursor.execute(insert, data)
+                #douban API request limit 40 request per second per IP
                 time.sleep(1.5)
                 conn.commit()
             except TypeError:

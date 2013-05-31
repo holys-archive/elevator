@@ -22,7 +22,10 @@ __author__ = 'holys <chendahui007@gmail.com>'
 
 
 def parse_sourcelist(session, url):
-    """Parse sourcelist to get filedetail url"""
+    """Parse sourcelist to get filedetail url
+    
+    session = requests.Session()
+    """
 
     thisid_re = re.compile(r"VodAdmin\/(.+?)\'")
     response = session.get(url)
@@ -42,10 +45,12 @@ def parse_detail(url):
    date_re = re.compile(ur"创建日期.\s(.+)?<")
 
    title = re.search(title_re, content).group(1)
-   upload_date = re.search(date_re, content).group(1)
+   upload_date = re.search(date_re, content).group(1).split(' ')[0].strip()
+   # change date type `2013-5-29` to `20130529`
+   upload_date = datetime.strftime(datetime.strptime(upload_date, '%Y-%m-%d'),
+           '%Y-%m-%d')
    download_url = soup.find_all('a')[2].get('href').encode('utf8')
-   poster_url = soup.find_all('img')[0].get('src')
-   return (title, upload_date, download_url, poster_url) 
+   return (title, upload_date, download_url) 
 
    
 def parse_douban(title, api_key=API_KEY):
@@ -69,7 +74,7 @@ def parse_douban(title, api_key=API_KEY):
         else:
             print "%s not found in douban" % title
     except IndexError:
-        print "fuck 豆瓣API, %s not found" % title 
+        print "f*ck 豆瓣API, %s not found" % title 
 
 
 
@@ -92,7 +97,7 @@ def check_update(date):
     """ Check if there are new contents """
     
     format_date = datetime.strptime(date, '%Y-%m-%d')
-    return  format_date == datetime.now()
+    return  format_date.date() == datetime.now().date()
 
 
 def check_sended(msg):
@@ -127,10 +132,8 @@ def weibo_upload(status, pic):
 
 def construct_status(topic, douban_title, douban_url, *download_url):
     """Construct weibo message """
-    #import pdb; pdb.set_trace()
     client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET,\
         redirect_uri=CALLBACK_URL)
-    #import pdb; pdb.set_trace()   
     client.set_access_token(ACCESS_TOKEN, EXPIRES_IN)
     download_url =\
         [client.short_url.shorten.get(url_long=url).get('urls')[0].get('url_short').encode('utf8')\

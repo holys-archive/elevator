@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
-"""方法:
-
-如果random 取电影id, 先判断sended的状态, 如果为0, 说明之前还没发过,
-然后查询是否还有相同电影id的条目, 如果有, 则取出其下载地址, 使用sina
-短网址api 压缩多个下载地址, 发布微博, 然后使已发送成功的条目的sended字段置1.
-
-"""
+"""Send weibo manually"""
 
 
 activate_this = 'venv/bin/activate_this.py'

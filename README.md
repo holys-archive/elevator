@@ -19,7 +19,9 @@ Make sure you have `python2.7`, `pip`, `virtualenv` installed.
 
 - Prepare database for storing history movie information
 
-    sqlite3 /data/movie.db < schema.sql
+```
+sqlite3 /data/movie.db < schema.sql
+```
 
 - Rename `config.py.example` to `config.py`,and fill parameters with yours.
 

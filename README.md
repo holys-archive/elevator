@@ -21,6 +21,8 @@ Make sure you have `python2.7`, `pip`, `virtualenv` installed.
 
     sqlite3 /data/movie.db < schema.sql
 
+- Rename `config.py.example` to `config.py`,and fill parameters with yours.
+
 
 
 [1]: http://strs.gdufs.edu.cn/web/
